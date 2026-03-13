@@ -1,5 +1,6 @@
 ---
-description: Set up toast notifications and statusline for Claude Code
+description: Run after plugin install to enable statusline and toasts.
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash
 ---
 

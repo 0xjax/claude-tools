@@ -1,5 +1,6 @@
 ---
-description: Open plugin config files for editing
+description: Edit plugin quote API or usage/weather secrets.
+disable-model-invocation: true
 allowed-tools: Bash, AskUserQuestion
 ---
 
