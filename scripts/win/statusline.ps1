@@ -72,7 +72,9 @@ if (Test-Path .git) {
   try {
     $headContent = Get-Content .git/HEAD -ErrorAction Stop
     if ($headContent -match "ref: refs/heads/(.*)") {
-      $gitBranch = " · $ESC[38;5;97m$iBranch $($matches[1])$ESC[0m"
+      $branch = $matches[1]
+      if ($branch.Length -gt 20) { $branch = $branch.Substring(0, 20) + [char]0x2026 }
+      $gitBranch = " · $ESC[38;5;97m$iBranch $branch$ESC[0m"
     }
   } catch {}
 }

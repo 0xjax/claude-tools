@@ -51,7 +51,7 @@ Run `/claude-tools:config` to edit plugin config files. `config.json` and `.env`
 
 - Config in `weather.json`: declares env var names for `hostEnv`, `locationEnv`, `keyEnv` (committed)
 - Secrets in `.env` (at `<plugin-cache-dir>/`): `QWEATHER_ENABLED=true`, `QWEATHER_HOST`, `QWEATHER_LOCATION`, `QWEATHER_KEY`
-- Displays: `☁ 15° 多云 13~22°` — real-time temp+condition from `/v7/weather/now` + today's high/low from `/v7/weather/3d`
+- Displays: `☀ 15°` — real-time temp + weather icon from `/v7/weather/now`
 - Cache: 10 minutes at `$TEMP\claude_weather_cache.txt` (win) / `/tmp/claude_weather_cache.txt` (linux)
 - Auth: `X-QW-Api-Key` header; API host is per-account (from QWeather console)
 
@@ -59,12 +59,16 @@ Run `/claude-tools:config` to edit plugin config files. `config.json` and `.env`
 
 Version in `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` must stay in sync. Bump both when releasing.
 
+## Statusline Design
+
+- **Single-line, minimal segments**: model · dir · branch · context% · usage · cost · weather
+- Keep it lean — fewer segments = easier to maintain, less visual noise
+- New segments MUST justify their value; prefer extending existing segments over adding new ones
+- Branch name truncated to 20 chars with `…` suffix
+
 ## Scripts
 
-- `hooks.ts` — cross-platform dispatcher (bun); takes event name as argv[2], routes to win/ or linux/
-- `statusline.ts` — reads `installed_plugins.json` for current install path, dispatches to win/ or linux/; copied by setup to `<plugin-cache-dir>/statusline.ts` (version-agnostic location)
-- `win/setup.ps1` — create Start Menu shortcut with `AppUserModelID` for toast sender identity
-- `win/permission.ps1` — switch on `tool_name` to build detail text
-- `win/stop.ps1` — fetch quote from active API, fallback to "Done"
-- `win/statusline.ps1` — rich status bar (model, git branch, context %, calls, cost, duration, datetime, weather)
+- `hooks.ts` — cross-platform dispatcher (bun); routes to win/ or linux/ by platform
+- `statusline.ts` — resolves install path from `installed_plugins.json`, dispatches to platform scripts
+- `win/setup.ps1` — create Start Menu shortcut with `AppUserModelID` for toast identity
 

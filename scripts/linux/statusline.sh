@@ -24,7 +24,9 @@ git_branch=""
 if [ -d .git ]; then
   head=$(cat .git/HEAD 2>/dev/null)
   if [[ "$head" =~ ref:\ refs/heads/(.*) ]]; then
-    git_branch=" · ${ESC}[38;5;97m${i_branch} ${BASH_REMATCH[1]}${ESC}[0m"
+    _br="${BASH_REMATCH[1]}"
+    (( ${#_br} > 20 )) && _br="${_br:0:20}…"
+    git_branch=" · ${ESC}[38;5;97m${i_branch} ${_br}${ESC}[0m"
   fi
 fi
 
